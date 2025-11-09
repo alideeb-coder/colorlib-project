@@ -1,0 +1,152 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.border_color a
+{
+     border-color: #444;
+}
+.border_color
+{
+     border-color: #444;
+}
+header .botton 
+{
+     color: #fff; 
+     background-color:rgb(107, 230, 82);
+}
+header .botton:hover
+{
+     background-color:rgb(24,24,27);
+}
+:has(.btn:hover) .x
+{
+    opacity: 1;
+    transform: translateY(-20px);
+    transition: all 0.5s;
+    pointer-events: all;
+}
+:has(.btn1:hover) .x1
+{
+    opacity: 1;
+    transform: translateY(-20px);
+    transition: all 0.5s;
+    pointer-events: all;
+}
+:has(.btn2:hover) .x2
+{
+    opacity: 1;
+    transform: translateY(-20px);
+    transition: all 0.5s;
+    pointer-events: all;
+}
+.font_sans
+{
+    font-family: sans-serif;
+}
+.font_mulish
+{
+    font-family: mulish;
+}
+.dot
+{
+    display: inline-block;
+}
+.dot:hover 
+{
+    background-color: #e6bb6b;
+}
+.dot-active
+{
+    background-color: #e7ab3c !important;
+}
+.slide-content >*
+{
+    opacity: 0;
+    transform: translateY(70px);
+}
+.fade-up
+{
+    animation: fadeup 0.8s ease-in-out forwards;
+}
+
+.rounded-contener
+{
+    opacity: 0;
+    rotate: 45deg;
+}
+.rounded 
+{
+    animation: rounded 0.8s ease-in-out forwards;
+}
+.slide
+{
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+.slide-active
+{
+    opacity: 1;
+}
+/* .x 
+{
+    text-decoration: underline;
+    color:black;
+}
+.y
+{
+    color: red;
+} */
+.swiper-button-next::after,.swiper-button-prev::after
+{
+    font-size: 30px !important;
+}
+.swiper-pagination-active {
+    background-color: #e7ab3c !important;
+}
+.time-style span
+{
+    color: #e7ab3c;
+    font-weight: 700;
+    line-height: 40px;
+    font-size: 36px;
+}
+.time-style p{
+    font-size: 16px;
+    color: #b2b2b2;
+    margin-bottom: 0px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes fadeup{
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes rounded{
+    to{
+        opacity: 1;
+        rotate: 0deg;
+    }
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>قائمة منسدلة متحركة</title>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+
+  <div class="relative inline-block text-left">
+    <!-- الزر -->
+    <button id="dropdownBtn"
+            class="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-lg b">
+      <span id="selectedLang">English</span>
+      <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+
+    <!-- القائمة المنسدلة -->
+    <div id="dropdownMenu"
+         class="absolute left-0 w-40 mt-2 transition-all duration-200 ease-out origin-top scale-y-0 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0">
+      <button class="block w-full px-4 py-2 text-right hover:bg-gray-100" data-lang="العربية">العربية</button>
+      <button class="block w-full px-4 py-2 text-right hover:bg-gray-100" data-lang="English">English</button>
+      <button class="block w-full px-4 py-2 text-right hover:bg-gray-100" data-lang="Français">Français</button>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('dropdownBtn');
+    const menu = document.getElementById('dropdownMenu');
+    const selectedLang = document.getElementById('selectedLang');
+    const arrow = btn.querySelector('svg');
+
+    // فتح/إغلاق القائمة
+    btn.addEventListener('click', () => {
+      const isOpen = menu.classList.contains('scale-y-100');
+      if (isOpen) {
+        menu.classList.replace('scale-y-100', 'scale-y-0');
+        menu.classList.replace('opacity-100', 'opacity-0');
+        arrow.classList.remove('rotate-180');
+      } else {
+        menu.classList.replace('scale-y-0', 'scale-y-100');
+        menu.classList.replace('opacity-0', 'opacity-100');
+        arrow.classList.add('rotate-180');
+      }
+    });
+
+    // تغيير اللغة عند الضغط
+    menu.querySelectorAll('button').forEach(btnLang => {
+      btnLang.addEventListener('click', () => {
+        selectedLang.textContent = btnLang.dataset.lang;
+        // إغلاق القائمة بعد الاختيار
+        menu.classList.replace('scale-y-100', 'scale-y-0');
+        menu.classList.replace('opacity-100', 'opacity-0');
+        arrow.classList.remove('rotate-180');
+      });
+    });
+
+    // إغلاق عند النقر خارجها
+    window.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.replace('scale-y-100', 'scale-y-0');
+        menu.classList.replace('opacity-100', 'opacity-0');
+        arrow.classList.remove('rotate-180');
+      }
+    });
+  </script>
+
+</body>
+</html>
