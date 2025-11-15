@@ -1,5 +1,160 @@
-// const { forEach } = require("lodash");
+let cart = {}; // { productId : {title, price, img, qty} }
 
+let addButtons = document.querySelectorAll('.add-to-cart');
+let cartItems = document.getElementById('cart-items');
+let cartTotalCount = document.getElementById('cart-total-count');
+let cartTotalPrice = document.querySelectorAll('.cart-total-price');
+// إضافة منتج
+addButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const product = btn.closest('.product');
+        
+        const id = product.dataset.id;
+        const title = product.dataset.title;
+        const price = Number(product.dataset.price);
+        const img = product.dataset.img;
+
+        // لو المنتج موجود → زيد الكمية فقط
+        if (cart[id]) {
+            cart[id].qty++;
+        } else {
+            cart[id] = { title, price, img, qty: 1 };
+        }
+        updateCartUI();
+    });
+});
+
+// تحديث واجهة السلة
+function updateCartUI() {
+    cartItems.innerHTML = "";
+    let totalPrice = 0;
+    let totalCount = 0;
+
+    for (let id in cart) {
+        const p = cart[id];
+        totalPrice += p.price * p.qty;
+        totalCount += p.qty;
+
+        cartItems.innerHTML += 
+            `<div class="flex items-center gap-3 pb-2 border-b relative " data-id="${id}">
+                <img src="${p.img}" class="w-14 h-14 rounded">
+                <div>
+                    <p class="text-[20px] text-yellow-500">${p.price}<span>.00</span>$ × ${p.qty}</p>
+                    <p class=" text-[18px]">${p.title}</p>
+                </div>
+                <button  class="ti-close text-[17px] absolute end-3 top-5 cursor-pointer close p-[6px] rounded-xl transition-all duration-300
+                hover:bg-slate-400"></button>
+            </div>`
+        ;
+    }
+
+    cartTotalCount.textContent = totalCount;
+    cartTotalPrice.forEach(i=>{
+      i.textContent=totalPrice
+});
+}
+
+// حذف منتج من السلة عند الضغط على زر الإغلاق
+cartItems.addEventListener('click', (event) => {
+    if (event.target.classList.contains('close')) {
+        // العنصر الأب الذي يحتوي معلومات المنتج
+        const productDiv = event.target.closest('.flex.items-center');
+        
+        // نحدد الـ id من صورة أو div (مطلوب إضافة data-id عند إنشاء العناصر في updateCartUI)
+        const id = productDiv.dataset.id;
+
+        if (id && cart[id]) {
+            delete cart[id]; // حذف المنتج من الكائن
+            updateCartUI(); // تحديث واجهة السلة
+        }
+    }
+});
+
+
+const cartIcon = document.querySelector(".cart");
+const addBtns = document.querySelectorAll(".add-to-cart");
+
+// انفجار بسيط حول زر الشراء
+function createExplosion(x, y) {
+  for (let i = 0; i < 8; i++) {
+    const spark = document.createElement("div");
+    spark.className = "explosion";
+
+    // اتجاه عشوائي
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 40 + Math.random() * 30;
+
+   ` spark.style.setProperty("--x", ${Math.cos(angle) * dist}px)`;
+   ` spark.style.setProperty("--y", ${Math.sin(angle) * dist}px)`;
+
+    spark.style.left = x + "px";
+    spark.style.top = y + "px";
+
+    document.body.appendChild(spark);
+
+    spark.addEventListener("animationend", () => spark.remove());
+  }
+}
+
+// طيران المنتج نحو السلة
+function flyToCart(startRect, endRect, imgSrc) {
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.className = "fly-img";
+
+  img.style.left = startRect.left + "px";
+  img.style.top = startRect.top + "px";
+
+  document.body.appendChild(img);
+
+  requestAnimationFrame(() => {
+    img.style.transform = 
+     ` translate(${endRect.left - startRect.left}px, 
+                ${endRect.top - startRect.top}px)
+      scale(0.2)
+      rotate(360deg)`
+    ;
+    img.style.opacity = "0";
+  });
+
+  img.addEventListener("transitionend", () => {
+  img.remove();
+
+    // وميض عند السلة
+    const flash = document.createElement("div");
+    flash.className = "cart-flash";
+    flash.style.left = endRect.left + "px";
+    flash.style.top = endRect.top + "px";
+
+    document.body.appendChild(flash);
+
+    flash.addEventListener("animationend", () => flash.remove());
+  });
+}
+
+// تشغيل الحركة عند الضغط
+addBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const product = btn.closest(".product");
+
+    // اهتزاز الزر
+    btn.classList.add("shake");
+    setTimeout(() => btn.classList.remove("shake"), 400);
+
+    // انفجار حول الزر
+    const b = btn.getBoundingClientRect();
+    createExplosion(b.left + b.width / 2, b.top + b.height / 2);
+
+    // حركة الطيران
+    const imgSrc = product.dataset.img;
+    const startRect = btn.getBoundingClientRect();
+    const endRect = cartIcon.getBoundingClientRect();
+
+    flyToCart(startRect, endRect, imgSrc);
+  });
+});
+
+////////////////////////////
 const slides = document.querySelectorAll('.slide');
 const dots = document.querySelectorAll('.dot');
 const prevBtn = document.querySelector('.left_btn');
@@ -166,34 +321,8 @@ const totalSeconds = 30 * 24 * 60 * 60;
 
 
 
-    //////////////////////
-
-
-function changeLanguage(lang) {
-  const translations = {
-    English: {
-      description: "login",
-      q1:"All Categories",
-      q2:"What do you need?",
-    },
-    العربية: {
-      description: "تسجيل الدخول",
-      q1:"كل الفئات",
-      q2:"ماذا تحتاج؟",
-    },
-  };
-
-  // غيّر نصوص الصفحة
-   document.getElementById("q1").textContent = translations[lang].q1;
-   document.getElementById("q2").placeholder = translations[lang].q2;
-  document.getElementById("description").textContent = translations[lang].description;
-
-  // لو بدك تغيّر اتجاه الصفحة للعربية
-  // document.documentElement.dir = lang === "العربية" ? "rtl" : "ltr";
-}
-
 //////////////////////////
-const btn = document.getElementById('dropdownBtn');
+    const btn = document.getElementById('dropdownBtn');
     const menu = document.getElementById('dropdownMenu');
     const selectedLang = document.getElementById('selectedLang');
     const arrow = btn.querySelector('svg');
@@ -218,6 +347,7 @@ const btn = document.getElementById('dropdownBtn');
         const selected=btnLang.dataset.lang;
         selectedLang.textContent = selected;
         changeLanguage(selected);
+        showSlide(currentIndex);
         // إغلاق القائمة بعد الاختيار
         menu.classList.replace('scale-y-100', 'scale-y-0');
         menu.classList.replace('opacity-100', 'opacity-0');

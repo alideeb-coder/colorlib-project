@@ -1,13 +1,15 @@
 @import "tailwindcss";
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 *{
     margin: 0px;
     padding: 0px;
 }
-
+.slide {
+    background-image: var(--bg-img);
+}
 .border_color a
 {
      border-color: #444;
@@ -94,15 +96,6 @@ header .botton:hover
 {
     opacity: 1;
 }
-/* .x 
-{
-    text-decoration: underline;
-    color:black;
-}
-.y
-{
-    color: red;
-} */
 .swiper-button-next::after,.swiper-button-prev::after
 {
     font-size: 30px !important;
@@ -127,11 +120,80 @@ header .botton:hover
 
 
 
+/* صورة طائرة */
+.fly-img {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 99999;
+  pointer-events: none;
+  transition: transform 2s cubic-bezier(.55, .085, .68, .53), opacity 0.9s;
+  box-shadow: 0 0 12px gold;
+}
+
+/* انفجار ذهبـي */
+.explosion {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: gold;
+  border-radius: 50%;
+  animation: explode 2s ease-out forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes explode {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0.3); opacity: 0; }
+}
+
+/* وميض عند السلة */
+.cart-flash {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: gold;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: flash 0.4s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flash {
+  0% { transform: scale(0.3); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* اهتزاز زر الشراء */
+.shake {
+  animation: shakeAnim 0.6s ease;
+}
+
+@keyframes shakeAnim {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.12); }
+  60% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
 
 
 
 
+*::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #fff !important;
+}
 
+::-webkit-scrollbar-thumb {
+    background:rgb(116, 115, 115);
+    border-radius: 20px;
+    width: 5px !important ;
+}
 
 
 
